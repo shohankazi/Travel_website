@@ -1,3 +1,46 @@
+<?php
+$insert = false;
+if (isset($_POST['name'])) {
+
+    $server = "localhost";
+$username = "root";
+$password = "";
+
+// Create a database connection
+$con = mysqli_connect($server,$username,$password);
+// check for connection success
+if (!$con) {
+    die("connection to this database failed due to" . mysqli_connect_error());
+}
+
+// echo "success connecting to the db"; 
+
+// collect post variables
+$name = $_POST['name'];
+$gender = $_POST['gender']; 
+$age = $_POST['age']; 
+$email = $_POST['email']; 
+$phone = $_POST['phone']; 
+$desc = $_POST['desc']; 
+$sql = "INSERT INTO `trip`.`trip` (`name`, `age`, `gender`, `email`, `phone`, `other`, `dt`) VALUES ('$name', '$age', '$gender', '$email', '$phone', '$desc', current_timestamp());";
+// echo $sql;
+
+// Execute the query
+if ($con -> query($sql) == true) {
+    // echo "Successfully inserted";
+    // Flag for insertion
+    $insert = true;
+}
+else{
+    echo "Error: $sql <br> $con ->error";
+}
+// close the database connection
+$con -> close();
+}
+?>
+
+
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -10,22 +53,26 @@
     <img class="bg" src="bg.jpg" alt="">
     <div class="container">
     <h1>Welcome to IIT Kharagpur US trip form</h1>
-    <P>Enter your details and submit this form ti confirm your participation in the trip</P>
-    <p class="submitMsg">Thanks for submitting your form. We are happy to see you joining us for the US trip.</p>
+    <p>Enter your details and submit this form ti confirm your participation in the trip</p>
+    
+    <?php
+    if ($insert == true) {
+        echo "<p class='submitMsg'>Thanks for submitting your form. We are happy to see you joining us for the US trip.</p>";
+    }
+    
+?>
     <form action="index.php" method="post">
-      <input type="text" name="name" id="name" placeholder="Enter your name">
-      <input type="number" name="age" id="age" placeholder="Enter your age">
-      <input type="text" name="gender" id="gender" placeholder="Enter your gender">
-      <input type="email" name="email" id="email" placeholder="Enter your email">
-      <input type="number" name="phone" id="phone" placeholder="Enter your number">
+      <input type="text" name="name" id="name" placeholder="Enter your name" required>
+      <input type="number" name="age" id="age" placeholder="Enter your age" required>
+      <input type="text" name="gender" id="gender" placeholder="Enter your gender" required>
+      <input type="email" name="email" id="email" placeholder="Enter your email" required>
+      <input type="number" name="phone" id="phone" placeholder="Enter your number" required>
       <textarea name="desc" id="desc" cols="30" rows="10" placeholder="Enter any other information here"></textarea>
       <button class="submit-btn">Submit</button>
       <button class="reset-btn">Reset</button>
     </form>
     </div>
-    <?php
-  echo "Hello world;"
-?>
     <script src="/index.js"></script>
+    
   </body>
 </html>
