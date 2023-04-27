@@ -23,6 +23,9 @@
       <button class="reset-btn">Reset</button>
     </form>
     </div>
+    <?php
+  echo "Hello world;"
+?>
     <script src="/index.js"></script>
   </body>
 </html>
